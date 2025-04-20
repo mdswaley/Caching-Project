@@ -13,7 +13,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,9 +23,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
+    private final String CACHE_NAME = "employees";
 
     @Override
-    @Cacheable(cacheNames = "employees", key = "#id") // if you want to store multiple keys for fun(long id, String name) then key = {#id,#name}
+    @Cacheable(cacheNames = CACHE_NAME, key = "#id") // if you want to store multiple keys for fun(long id, String name) then key = {#id,#name}
     public EmployeeDto getEmployeeById(Long id) { // store prev id in cache if same id call again then take from cache not call db using api
         log.info("Fetching employee with id: {}", id);
         Employee employee = employeeRepository.findById(id)
@@ -39,6 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @CachePut(cacheNames = CACHE_NAME,key = "#result.id") // result is something which method is returned (Employee Dto, and we store id in cache)
     public EmployeeDto createNewEmployee(EmployeeDto employeeDto) {
         log.info("Creating new employee with email: {}", employeeDto.getEmail());
         List<Employee> existingEmployees = employeeRepository.findByEmail(employeeDto.getEmail());
@@ -55,6 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @CachePut(cacheNames = CACHE_NAME,key = "#id")
     public EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) {
         log.info("Updating employee with id: {}", id);
         Employee employee = employeeRepository.findById(id)
@@ -77,6 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @CacheEvict(cacheNames = CACHE_NAME, key = "#id") //it deletes employee with id this from cache.
     public void deleteEmployee(Long id) {
         log.info("Deleting employee with id: {}", id);
         boolean exists = employeeRepository.existsById(id);
