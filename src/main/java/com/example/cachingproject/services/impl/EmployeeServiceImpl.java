@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Cacheable(cacheNames = CACHE_NAME, key = "#id") // if you want to store multiple keys for fun(long id, String name) then key = {#id,#name}
+    @Transactional // use for database interaction if method is success then commit or else rollback from real database.
     public EmployeeDto getEmployeeById(Long id) { // store prev id in cache if same id call again then take from cache not call db using api
         log.info("Fetching employee with id: {}", id);
         Employee employee = employeeRepository.findById(id)
