@@ -20,6 +20,9 @@ public class SalaryAccount {
 
     private BigDecimal balance;
 
+    @Version
+    private Long version;
+
     @OneToOne
     private Employee employee;
 }

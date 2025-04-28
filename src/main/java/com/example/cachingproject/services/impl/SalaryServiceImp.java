@@ -35,7 +35,7 @@ public class SalaryServiceImp implements SalaryService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+//    @Transactional(isolation = Isolation.SERIALIZABLE)
     public SalaryDto incrementSal(Long accountId) {
         SalaryAccount salaryAccount = salaryRepository.findById(accountId).orElseThrow(
                 ()->new RuntimeException("salary with id "+accountId+" not found."));

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class SalaryDto {
     private Long id;
     private BigDecimal balance;
+    private Long version;
     @JsonIgnore
     private Employee employee;
 }
