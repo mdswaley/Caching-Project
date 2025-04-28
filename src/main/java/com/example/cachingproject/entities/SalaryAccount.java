@@ -1,9 +1,7 @@
 package com.example.cachingproject.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 
@@ -23,6 +21,6 @@ public class SalaryAccount {
     @Version
     private Long version;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Employee employee;
 }
