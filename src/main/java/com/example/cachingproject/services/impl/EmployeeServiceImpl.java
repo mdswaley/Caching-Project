@@ -3,7 +3,6 @@ package com.example.cachingproject.services.impl;
 
 import com.example.cachingproject.dto.EmployeeDto;
 import com.example.cachingproject.entities.Employee;
-import com.example.cachingproject.entities.SalaryAccount;
 import com.example.cachingproject.exceptions.ResourceNotFoundException;
 import com.example.cachingproject.repositories.EmployeeRepository;
 import com.example.cachingproject.services.EmployeeService;
